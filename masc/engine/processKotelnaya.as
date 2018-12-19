@@ -23,7 +23,7 @@ function processKotelnaya(kotelnaya:Kotelnaya):void {
 	//	}
 	//}
 	
-	kotelnaya.timeWait=60;
+	kotelnaya.timeWait=60; //Hello
 	if (kotelnaya.A) {	
 		kotelnaya.t++; 
 		//Усредняем Т за заданное время
