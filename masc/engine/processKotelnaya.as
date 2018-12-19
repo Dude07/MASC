@@ -1,4 +1,4 @@
-﻿import masc.tags.Kotel;
+import masc.tags.Kotel;
 import masc.tags.Kotelnaya;
 var needPower,indxK:int;
 
@@ -23,7 +23,7 @@ function processKotelnaya(kotelnaya:Kotelnaya):void {
 	//	}
 	//}
 	
-	kotelnaya.timeWait=60; //Hello
+	kotelnaya.timeWait=60;
 	if (kotelnaya.A) {	
 		kotelnaya.t++; 
 		//Усредняем Т за заданное время
@@ -51,39 +51,40 @@ function processKotelnaya(kotelnaya:Kotelnaya):void {
 			kotelnaya.fiz_f=kotelnaya.fiz;
 		//Определяем надо добавлять или отнимать газ
 			needPower=0;
-			if (kotelnaya.power=1 && kotelnaya.T_inc!=1) needPower=1; 	//Если надо добавить немного газу и Т не растет то добавляем
-			if (kotelnaya.power=-1 && kotelnaya.T_inc!=-1) needPower=-1;  //Если надо убрать немного газу и Т не падает то убираем
-			if (kotelnaya.power=2 && kotelnaya.T_inc!=2) needPower=1;		// Если надо добавить много газу и Т растет медленно
-			if (kotelnaya.power=-2 && kotelnaya.T_inc!=-2) needPower=-1;	// Если надо добавить много газу и Т растет медленно
+			if (kotelnaya.power==1 && kotelnaya.T_inc!=1) needPower=1; 	//Если надо добавить немного газу и Т не растет то добавляем
+			if (kotelnaya.power==-1 && kotelnaya.T_inc!=-1) needPower=-1;  //Если надо убрать немного газу и Т не падает то убираем
+			if (kotelnaya.power==2 && kotelnaya.T_inc!=2) needPower=1;		// Если надо добавить много газу и Т растет медленно
+			if (kotelnaya.power==-2 && kotelnaya.T_inc!=-2) needPower=-1;	// Если надо добавить много газу и Т растет медленно
+			
 			
 		//Выбор котла для работы
 			//Если надо добавить газу
 			indxK=-1;
-			if (needPower=1) {
+			if (needPower==1) {
 				// Ищем котел с одной работающей горелкой для запуска второй
 				for (var i:int = 0;i < kotelnaya.Kotli.length;i++) {
-					if (kotelnaya.Kotli[i].A=1 && kotelnaya.Kotli[i].isOn && kotelnaya.Kotli[i].errFlame0=0 && kotelnaya.Kotli[i].errFlame1=0 && kotelnaya.Kotli[i].blocked=0 && kotelnaya.Kotli[i].isFlame0=1 && kotelnaya.Kotli[i].errFlame1=0) { 
+					if (kotelnaya.Kotli[i].A==1 && kotelnaya.Kotli[i].isOn && kotelnaya.Kotli[i].errFlame0==0 && kotelnaya.Kotli[i].errFlame1==0 && kotelnaya.Kotli[i].blocked==0 && kotelnaya.Kotli[i].isFlame0==1 && kotelnaya.Kotli[i].errFlame1==0) { 
 						indxK=i; kotelnaya.Kotli[i].gor1=1;
 					}
 				}
 				// если не нашли работающий котел с одной горекой то запускаем следующий свободный котел
-				if (indxK=-1) {
-					if (kotelnaya.Kotli[i].A=1 && kotelnaya.Kotli[i].isOn && kotelnaya.Kotli[i].errFlame0=0 && kotelnaya.Kotli[i].errFlame1=0 && kotelnaya.Kotli[i].blocked=0 && kotelnaya.Kotli[i].isFlame0=0 && kotelnaya.Kotli[i].errFlame1=0) { 
+				if (indxK==-1) {
+					if (kotelnaya.Kotli[i].A==1 && kotelnaya.Kotli[i].isOn && kotelnaya.Kotli[i].errFlame0==0 && kotelnaya.Kotli[i].errFlame1==0 && kotelnaya.Kotli[i].blocked==0 && kotelnaya.Kotli[i].isFlame0==0 && kotelnaya.Kotli[i].errFlame1==0) { 
 						indxK=i; kotelnaya.Kotli[i].gor0=1; 
 					}
 				}
 			}
 			//Если надо убавить газу
-			if (needPower=-1) {
+			if (needPower==-1) {
 				// Ищем котел с одной работающей горелкой для остановки
-				for (var i:int = 0;i < kotelnaya.Kotli.length;i++) {
-					if (kotelnaya.Kotli[i].A=1 && kotelnaya.Kotli[i].isOn && kotelnaya.Kotli[i].errFlame0=0 && kotelnaya.Kotli[i].errFlame1=0 && kotelnaya.Kotli[i].blocked=0 && kotelnaya.Kotli[i].isFlame0=1 && kotelnaya.Kotli[i].errFlame1=0) { 
+				for (i = 0;i < kotelnaya.Kotli.length;i++) {
+					if (kotelnaya.Kotli[i].A==1 && kotelnaya.Kotli[i].isOn && kotelnaya.Kotli[i].errFlame0==0 && kotelnaya.Kotli[i].errFlame1==0 && kotelnaya.Kotli[i].blocked==0 && kotelnaya.Kotli[i].isFlame0==1 && kotelnaya.Kotli[i].errFlame1==0) { 
 						indxK=i; kotelnaya.Kotli[i].gor0=0;
 					}
 				}
 				// если не нашли работающий котел с одной горекой то останавливаем первый работающий с двумя горелками
-				if (indxK=-1) {
-					if (kotelnaya.Kotli[i].A=1 && kotelnaya.Kotli[i].isOn && kotelnaya.Kotli[i].errFlame0=0 && kotelnaya.Kotli[i].errFlame1=0 && kotelnaya.Kotli[i].blocked=0 && kotelnaya.Kotli[i].isFlame0=1 && kotelnaya.Kotli[i].errFlame1=1) { 
+				if (indxK==-1) {
+					if (kotelnaya.Kotli[i].A==1 && kotelnaya.Kotli[i].isOn && kotelnaya.Kotli[i].errFlame0==0 && kotelnaya.Kotli[i].errFlame1==0 && kotelnaya.Kotli[i].blocked==0 && kotelnaya.Kotli[i].isFlame0==1 && kotelnaya.Kotli[i].errFlame1==1) { 
 						indxK=i; kotelnaya.Kotli[i].gor1=0; 
 					}
 				}
