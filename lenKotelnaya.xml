@@ -1,0 +1,134 @@
+<masc version="0" id="Len_Kt_0">
+	<projectName>Котельная Ленинградская</projectName>
+	<projectType cycleTrigger="MASC">web</projectType> <!--Параметр отвечает за срабатывание обработчика данных onMQTT - по данным от брокера, ENTER_FRAME - 24 раза в секунду, MASC - режим супер оптимизации -->
+	
+	<Servers>
+	 <server id="0" type="web" name="Основной" ip="iot.eclipse.org" port="1883"/>
+	 <server id="1" type="web" name="Запасной" ip="broker.hivemq.com" port="1883"/>
+    </Servers>
+	
+	<Sources>
+		<source id="3" name="cMT-SRV100" type="MQTT/d" path="MASC/tags/Kotelnaya/0/tags"/>
+		<!--<source id="3" name="cMT-SRV100" type="MQTT/d" path="MASC/tags/Kotelnaya/0/sets"/>
+		<source id="1" name="cMT-SRV100" type="MQTT/d" path="MASC/tags/Kotelnaya/0/ai"/>
+		<source id="2" name="cMT-SRV100" type="MQTT/d" path="MASC/tags/Kotelnaya/0/di"/>
+		<source id="3" name="cMT-SRV100" type="MQTT/d" path="MASC/tags/Kotelnaya/0/dq"/> -->
+	</Sources>
+  
+	<PLC ind="0">
+		<ai id="0" type="1" num="0" name="Резерв" src="MASC/tags/Kotelnaya/0/tags:d:ai0" eu="" filtr="0" mltp="1"/>  
+		<ai id="1" type="1" num="1" name="Т подачи" src="MASC/tags/Kotelnaya/0/tags:d:ai1" eu="°С" filtr="0" mltp="1"> 
+			<reg id="0" num="0" active="1" src_SP="table" multyp="1" multyp_in="MASC/tags/PLC/0/AI/3:fiz" table="0" table_in="MASC/tags/PLC/0/AI/3:fiz">
+				<cor id="0" num="0" active="0" val1="MASC/tags/PLC/0/AI/3:fiz" exp="not_equal" val2="MASC/tags/PLC/0/AI/3:SP" val3="20" type="d" k="10"/>
+			</reg>
+		</ai>
+		<ai id="2" type="1" num="2" name="Т обратки" src="MASC/tags/Kotelnaya/0/tags:d:ai2" eu="°С" filtr="0" mltp="1"/>
+		<ai id="3" type="1" num="3" name="Т улицы" src="MASC/tags/Kotelnaya/0/tags:d:ai3" eu="°С" filtr="0" mltp="1"/>
+		<ai id="4" type="1" num="4" name="P подпитки" src="MASC/tags/Kotelnaya/0/tags:d:ai4" eu="кг/см2" filtr="0" mltp="1"/>
+		<ai id="5" type="1" num="5" name="P подачи" src="MASC/tags/Kotelnaya/0/tags:d:ai5" eu="кг/см2" filtr="0" mltp="1"/>
+		<ai id="6" type="1" num="6" name="P обратки" src="MASC/tags/Kotelnaya/0/tags:d:ai6" eu="кг/см2" filtr="0" mltp="1"/>
+		<ai id="7" type="1" num="7" name="Резерв" src="MASC/tags/Kotelnaya/0/tags:d:ai7" eu="" filtr="0" mltp="1"/>
+		
+		<di id="8" type="0" num="0" name="Малое горение котла №1" src="MASC/tags/Kotelnaya/0/tags:d:di0" filtr="0"/>
+		<di id="9" type="0" num="1" name="Авария горелки котла №1" src="MASC/tags/Kotelnaya/0/tags:d:di1" filtr="0"/>
+		<di id="10" type="0" num="2" name="Малое горение котла №2" src="MASC/tags/Kotelnaya/0/tags:d:di2" filtr="0"/>
+		<di id="11" type="0" num="3" name="Авария горелки котла №2" src="MASC/tags/Kotelnaya/0/tags:d:di3" filtr="0"/>
+		<di id="12" type="0" num="4" name="Низкое P подачи котла №1" src="MASC/tags/Kotelnaya/0/tags:d:di4" filtr="0"/>
+		<di id="13" type="0" num="5" name="Низкое P подачи котла №2" src="MASC/tags/Kotelnaya/0/tags:d:di5" filtr="0"/>
+		<di id="14" type="0" num="6" name="Проток подачи" src="MASC/tags/Kotelnaya/0/tags:d:di6" filtr="0"/>
+		<di id="15" type="0" num="7" name="Токсичный газ!" src="MASC/tags/Kotelnaya/0/tags:d:di7" filtr="0"/>
+		<di id="16" type="0" num="8" name="Горючий газ!" src="MASC/tags/Kotelnaya/0/tags:d:di8" filtr="0"/>
+		<di id="17" type="0" num="9" name="Котёл 1 отключен" src="MASC/tags/Kotelnaya/0/tags:d:di9" filtr="0"/>
+		<di id="18" type="0" num="10" name="Котёл 2 отключен" src="MASC/tags/Kotelnaya/0/tags:d:di10" filtr="0"/>
+		<di id="19" type="0" num="11" name="220 вольт" src="MASC/tags/Kotelnaya/0/tags:d:di11" filtr="0"/>
+		
+		<dq id="20" type="0" num="0" name="Пуск котла №1" src="MASC/tags/Kotelnaya/0/tags:d:dq0" dst="MASC/tags/Kotelnaya/0/dq0:d:fiz" filtr="0"/>
+		<dq id="21" type="0" num="1" name="Пуск полного горения котла №1" src="MASC/tags/Kotelnaya/0/tags:d:dq1" dst="MASC/tags/Kotelnaya/0/dq1:d:fiz" filtr="0"/>
+		<dq id="22" type="0" num="2" name="Пуск котла №2" src="MASC/tags/Kotelnaya/0/tags:d:dq2" dst="MASC/tags/Kotelnaya/0/dq2:d:fiz" filtr="0"/>
+		<dq id="23" type="0" num="3" name="Пуск полного горения котла №2" src="MASC/tags/Kotelnaya/0/tags:d:dq3" dst="MASC/tags/Kotelnaya/0/dq3:d:fiz" filtr="0"/>
+	</PLC>
+  
+  	<trendBD name="asProject" locMac="inDirectory" locWin="inDirectory"/> <!-- Имя БД проекта (другое или как у проекта - asProject). Путь к базе данных с трендами. В случае когда БД в папке проекта, указывается inDirectory, иначе полный путь к базе.-->
+	
+	<Page id="0" name="Мнемосхема" icon="0">
+		<object id="1" type="FizAI" num="0" x="267" y="698" form="*.##"/>
+		<object id="2" type="PushBtn" numDQ="0" x="467" y="298"/> <!-- Может быть парамерт numDI="" для обратной связи если не указан олбратка берётся по DQ -->
+		<object id="3" type="SlideBtn" numDQ="1" x="467" y="350"/>
+		<object id="4" type="LampDI" num="0" x="1890" y="100"/>
+		<object id="5" type="LampDI" num="1" x="1890" y="150"/>
+		<object id="6" type="LampDI" num="2" x="1890" y="200"/>
+		<object id="7" type="LampDI" num="3" x="1890" y="250"/>
+		<object id="8" type="LampDI" num="4" x="1890" y="300"/>
+		<object id="9" type="LampDI" num="5" x="1890" y="350"/>
+		<object id="10" type="LampDI" num="6" x="1890" y="400"/>
+		<object id="11" type="LampDI" num="7" x="1890" y="450"/>
+		<object id="12" type="LampDI" num="8" x="1890" y="500"/>
+		<object id="13" type="LampDI" num="9" x="1890" y="550"/>
+		<object id="14" type="LampDI" num="10" x="1890" y="600"/>
+		<object id="18" type="LampDI" num="11" x="1890" y="650"/>
+		
+		<object id="15" type="TextData" x="100" y="934" src="MASC/tags/MB_SIEMENS-SRD/t0" dst="MASC/tags/MB_SIEMENS-SRD/t0/SP"  eu="°С"/>
+		
+		<object id="16" type="Kotel0" x="500" y="500" size="1" kotelnaya="0" num="0"/>
+		<object id="17" type="Kotel0" x="900" y="500" size="1" kotelnaya="0" num="1"/>
+		<!--<object id="6" type="Warn" x="506" y="700" value="MASC/tags/DI/1:fiz" size="2" color="1" text="Авария горелки котла №1" sizeT="20" colorT="0xFF6600"/>
+		<object id="7" type="Warn" x="1166" y="800" value="MASC/tags/DI/4:fiz" size="1" color="2" text="Давление подачи котла №1 ниже минимального" sizeT="10" colorT="0xFF3300"/> -->
+	</Page>
+	
+	<Kotelnaya id="0" num="0" name="Котельная станица Ленинградская. Электросети" mode="MASC/tags/Kotelnaya/0/mode:d:mode" ping="MASC/tags/Kotelnaya/0/ping:d:ping" ai_SP="1">
+		<kotel id="0" type="0" num="0" mode="MASC/tags/Kotelnaya/0/Kotel0:d:A" mode_v="MASC/tags/Kotelnaya/0/tags:d:Kotel0_A" gor0="MASC/tags/Kotelnaya/0/dq0:d:fiz" gor0_v="MASC/tags/Kotelnaya/0/tags:d:dq0" gor1="MASC/tags/Kotelnaya/0/dq1:d:fiz" gor1_v="MASC/tags/Kotelnaya/0/tags:d:dq1" isOn="MASC/tags/Kotelnaya/0/tags:d:dq0" isFlame0="MASC/tags/Kotelnaya/0/tags:d:di0" isFlame1="MASC/tags/Kotelnaya/0/tags:d:dq1"/>
+		<kotel id="1" type="0" num="1" mode="MASC/tags/Kotelnaya/0/Kotel1:d:A" mode_v="MASC/tags/Kotelnaya/0/tags:d:Kotel1_A" gor0="MASC/tags/Kotelnaya/0/dq2:d:fiz" gor0_v="MASC/tags/Kotelnaya/0/tags:d:dq2" gor1="MASC/tags/Kotelnaya/0/dq3:d:fiz" gor1_v="MASC/tags/Kotelnaya/0/tags:d:dq3" isOn="MASC/tags/Kotelnaya/0/tags:d:dq2" isFlame0="MASC/tags/Kotelnaya/0/tags:d:di2" isFlame1="MASC/tags/Kotelnaya/0/tags:d:dq3"/>
+		<algorithm SP="MASC/tags/PLC/0/AI/1:SP" fiz="MASC/tags/PLC/0/AI/1:fiz"/>
+	</Kotelnaya>
+	
+	<SugarFactory>
+		
+	</SugarFactory>
+	
+	<Tables>
+		<table id="0" num="0" name="Температурная таблица котельной №0">
+			<pair ins="10" out="28.3"/>
+			<pair ins="9" out="30.4"/>
+			<pair ins="8" out="32.4"/>
+			<pair ins="7" out="34.4"/>
+			<pair ins="6" out="36.4"/>
+			<pair ins="5" out="38.3"/>
+			<pair ins="4" out="40.2"/>
+			<pair ins="3" out="42.1"/>
+			<pair ins="2" out="44"/>
+			<pair ins="1" out="45.8"/>
+			<pair ins="0" out="47.7"/>
+			<pair ins="-1" out="49.5"/>
+			<pair ins="-2" out="51.3"/>
+			<pair ins="-3" out="54.9"/>
+			<pair ins="-4" out="56.2"/>
+			<pair ins="-5" out="58.4"/>
+			<pair ins="-6" out="60.1"/>
+			<pair ins="-7" out="61.8"/>
+			<pair ins="-8" out="63.5"/>
+			<pair ins="-9" out="65.2"/>
+			<pair ins="-10" out="66.9"/>
+			<pair ins="-11" out="68.6"/>
+			<pair ins="-12" out="70.3"/>
+			<pair ins="-13" out="72"/>
+			<pair ins="-14" out="73.6"/>
+			<pair ins="-15" out="75.3"/>
+			<pair ins="-16" out="76.9"/>
+			<pair ins="-17" out="78.5"/>
+			<pair ins="-18" out="80.2"/>
+			<pair ins="-19" out="81.8"/>
+			<pair ins="-20" out="83.3"/>
+			<pair ins="-21" out="85"/>
+			<pair ins="-22" out="86.8"/>
+			<pair ins="-23" out="88.7"/>
+			<pair ins="-24" out="90.8"/>
+			<pair ins="-25" out="93"/>
+		</table>
+	</Tables>
+	
+	<Page id="1" name="Настройки котлов" icon="0">
+		<object id="0" type="TextData" x="100" y="534" src="MASC/tags/Kotelnaya/0/prs:d:par1" dst="MASC/sets/Kotelnaya/0/prs:d:par1"  eu=""/>
+		<object id="0" type="TextData" x="100" y="734" src="MASC/tags/Kotelnaya/0/prs:d:par2" dst="MASC/sets/Kotelnaya/0/prs:d:par2"  eu=""/>
+		<object id="0" type="TextData" x="100" y="934" src="MASC/tags/Kotelnaya/0/prs:d:par3" dst="MASC/sets/Kotelnaya/0/prs:d:par3"  eu=""/>
+	</Page>
+</masc>
